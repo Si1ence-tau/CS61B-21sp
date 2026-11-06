@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author : Tau
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -29,7 +29,8 @@ public class Model extends Observable {
      *  and score 0. */
     public Model(int size) {
         board = new Board(size);
-        score = maxScore = 0;
+        score = 0;
+        maxScore = 0;
         gameOver = false;
     }
 
@@ -110,13 +111,49 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        board.setViewingPerspective(side);
+        for (int i = 0; i < board.size(); i++) {
+            if (helperHandleOneColumn(i)) {
+                changed = true;
+            }
+        }
+        board.setViewingPerspective(Side.NORTH);
         checkGameOver();
         if (changed) {
             setChanged();
+        }
+        return changed;
+    }
+
+    private boolean helperHandleOneColumn(int column) {
+        int waiterIndex = board.size() - 1;
+        boolean changed = false;
+        for (int probeIndex = board.size() - 2; probeIndex >= 0; probeIndex--) {
+            Tile waiter =  board.tile(column, waiterIndex);
+            Tile probe = board.tile(column, probeIndex);
+            if (probe != null && (waiter == null || waiter.value() == probe.value())) {
+                if (board.move(column, waiterIndex, probe)) {
+                    score += board.tile(column, waiterIndex).value();
+                    waiterIndex--;
+                }
+                changed = true;
+            } else if (probe != null) {
+                while (waiterIndex > probeIndex) {
+                    waiterIndex--;
+                    waiter = board.tile(column, waiterIndex);
+                    if (waiter == null || waiter.value() == probe.value()) {
+                        if (board.move(column, waiterIndex, probe)) {
+                            score += board.tile(column, waiterIndex).value();
+                            waiterIndex--;
+                        }
+                        changed = true;
+                        break;
+                    }
+                }
+            }
+
         }
         return changed;
     }
@@ -137,7 +174,14 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (b.tile(i, j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +191,15 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Tile tile = b.tile(i, j);
+                if (tile != null && tile.value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -158,13 +210,27 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        int side = b.size();
+        for (int i = 0; i < side; i++) {
+            for (int j = 0; j < side - 1; j++) {
+                if (b.tile(i, j).value() == b.tile(i, j + 1).value()) {
+                    return true;
+                }
+                if (b.tile(j, i).value() == b.tile(j + 1, i).value()) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
 
     @Override
-     /** Returns the model as a string, used for debugging. */
+    /** Returns the model as a string, used for debugging. */
     public String toString() {
         Formatter out = new Formatter();
         out.format("%n[%n");
