@@ -73,7 +73,7 @@ public class ArrayDeque<T> implements Deque<T> {
         T tmp = items[(head + 1) % total];
         items[(head + 1) % total] = null;
         head = (head + 1) % total;
-        size++;
+        size--;
         return tmp;
     }
 
@@ -85,7 +85,7 @@ public class ArrayDeque<T> implements Deque<T> {
         T tmp = items[(tail - 1 + total) % total];
         items[(tail - 1 + total) % total] = null;
         tail = (tail - 1 + total) % total;
-        size++;
+        size--;
         return tmp;
     }
 
