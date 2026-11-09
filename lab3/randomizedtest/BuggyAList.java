@@ -20,7 +20,7 @@ public class BuggyAList<Item> {
 
     /** Creates an empty list. */
     public BuggyAList() {
-        items = (Item[]) new Object[1];
+        items = (Item[]) new Object[100];
         size = 0;
     }
 
