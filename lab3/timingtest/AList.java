@@ -36,7 +36,6 @@ public class AList<Item> {
         if (size == items.length) {
             resize((int) (size * 1.5));
         }
-
         items[size] = x;
         size = size + 1;
     }
