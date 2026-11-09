@@ -20,7 +20,7 @@ public class BuggyAList<Item> {
 
     /** Creates an empty list. */
     public BuggyAList() {
-        items = (Item[]) new Object[100];
+        items = (Item[]) new Object[10];
         size = 0;
     }
 
@@ -60,7 +60,7 @@ public class BuggyAList<Item> {
       * returns deleted item. */
     public Item removeLast() {
         if ((size < items.length / 4) && (size > 4)) {
-            resize(items.length / 4);
+            resize(items.length / 2);
         }
         Item x = getLast();
         items[size - 1] = null;
