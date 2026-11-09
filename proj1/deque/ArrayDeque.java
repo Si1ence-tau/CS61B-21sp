@@ -67,17 +67,25 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         T tmp = items[(head + 1) % total];
         items[(head + 1) % total] = null;
         head = (head + 1) % total;
+        size++;
         return tmp;
     }
 
     @Override
     public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
         T tmp = items[(tail - 1 + total) % total];
         items[(tail - 1 + total) % total] = null;
         tail = (tail - 1 + total) % total;
+        size++;
         return tmp;
     }
 
