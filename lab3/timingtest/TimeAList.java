@@ -22,7 +22,6 @@ public class TimeAList {
     }
 
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
         AList<Integer> sizes = new AList<Integer>();
         AList<Double> times = new AList<Double>();
 
