@@ -21,13 +21,13 @@ public class ArrayDeque<T> implements Deque<T> {
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
         for (int i = 0; i < total; i++) {
-            newArray[i] = items[(head + 1) % total];
+            newArray[i + 1] = items[(head + 1) % total];
             head = (head + 1) % total;
         }
         total = capacity;
         items = newArray;
         head = 0;
-        tail = size - 1;
+        tail = size + 1;
     }
 
     @Override
