@@ -109,7 +109,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     @Override
     public T get(int index) {
         Node tmp = sentinel;
-        for(int i = 0; i < index + 1; i++) {
+        for (int i = 0; i < index + 1; i++) {
             if (tmp != null) {
                 tmp = tmp.next;
             } else {
@@ -120,7 +120,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     public boolean equals(Object o) {
-        if (! (o instanceof Deque)) {
+        if (!(o instanceof Deque)) {
+            return false;
+        }
+        if (((Deque<?>) o).size() != this.size()) {
             return false;
         }
         for (int i = 0; i < size; i++) {
