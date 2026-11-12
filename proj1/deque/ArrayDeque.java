@@ -104,7 +104,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
             return null;
         }
         if (size < Math.round(total / DECREASE_FACTOR)) {
-            resize((int) Math.round(total / DECREASE_FACTOR));
+            resize((int) Math.round(total / DECREASE_FACTOR) + 2);
         }
         T tmp = items[(tail - 1 + total) % total];
         items[(tail - 1 + total) % total] = null;
