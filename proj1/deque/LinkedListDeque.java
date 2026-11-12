@@ -7,7 +7,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     private class LLDequeIterator implements Iterator<T> {
         Node index;
 
-        public LLDequeIterator() {
+        LLDequeIterator() {
             index = sentinel;
         }
 

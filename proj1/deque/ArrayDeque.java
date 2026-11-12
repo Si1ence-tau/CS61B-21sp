@@ -11,7 +11,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     private class ADequeIterator implements Iterator<T> {
         private int index;
 
-        public ADequeIterator() {
+        ADequeIterator() {
             this.index = 0;
         }
 
