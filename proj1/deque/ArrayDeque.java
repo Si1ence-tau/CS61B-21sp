@@ -1,9 +1,28 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Deque<T>, Iterable<T>{
     private static final int INIT_CAPACITY = 100;
     private static final double RESIZE_FACTOR = 1.5;
 
+    private class ADequeIterator implements Iterator<T> {
+        private int index;
+
+        public ADequeIterator() {
+            this.index = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return index < size;
+        }
+
+        @Override
+        public T next() {
+            return get(index++);
+        }
+    }
     private T[] items;
     private int head;
     private int tail;
@@ -50,10 +69,6 @@ public class ArrayDeque<T> implements Deque<T> {
         size++;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
 
     @Override
     public int size() {
@@ -92,5 +107,22 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public T get(int index) {
         return items[(head + 1 + index) % total];
+    }
+
+    public boolean equals(Object o) {
+        if (! (o instanceof Deque)) {
+            return false;
+        }
+        for (int i = 0; i < size; i++) {
+            if (!this.get(i).equals(((Deque<?>) o).get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ADequeIterator();
     }
 }

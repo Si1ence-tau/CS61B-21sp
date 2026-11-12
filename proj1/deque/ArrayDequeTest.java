@@ -1,6 +1,11 @@
 package deque;
 
+import edu.princeton.cs.algs4.StdRandom;
 import org.junit.Test;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import static org.junit.Assert.*;
 
 
@@ -92,7 +97,6 @@ public class ArrayDequeTest {
     /* check if null is return when removing from an empty ArrayDeque. */
     public void emptyNullReturnTest() {
 
-
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
 
         boolean passed1 = false;
@@ -106,7 +110,6 @@ public class ArrayDequeTest {
     /* Add large number of elements to deque; check if order is correct. */
     public void bigLLDequeTest() {
 
-
         ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
         for (int i = 0; i < 1000000; i++) {
             lld1.addLast(i);
@@ -119,6 +122,71 @@ public class ArrayDequeTest {
         for (double i = 999999; i > 500000; i--) {
             assertEquals("Should have the same value", i, (double) lld1.removeLast(), 0.0);
         }
+    }
 
+    @Test
+    public void randomDiffTest() {
+        ArrayDeque<Integer> lld = new ArrayDeque<>();
+        LinkedList<Integer> ll = new LinkedList<>();
+        int N = 200000;
+        for (int i = 0; i < N; i++) {
+            int operationNumber = StdRandom.uniform(0, 7);
+            if (operationNumber == 0) {
+                int randVal = StdRandom.uniform(0, 100);
+                lld.addFirst(randVal);
+                ll.addFirst(randVal);
+                assertEquals(lld.size(), ll.size());
+                assertEquals(lld.isEmpty(), ll.isEmpty());
+                for (int j = 0; j < lld.size(); j++) {
+                    assertEquals(lld.get(j), ll.get(j));
+                }
+            } else if (operationNumber == 1) {
+                int randVal = StdRandom.uniform(0, 100);
+                lld.addLast(randVal);
+                ll.addLast(randVal);
+                assertEquals(lld.size(), ll.size());
+                assertEquals(lld.isEmpty(), ll.isEmpty());
+                for (int j = 0; j < lld.size(); j++) {
+                    assertEquals(lld.get(j), ll.get(j));
+                }
+            } else if (operationNumber == 2) {
+                assertEquals(lld.size(), ll.size());
+                if (lld.size() > 0) {
+                    lld.removeFirst();
+                    ll.removeFirst();
+                    assertEquals(lld.size(), ll.size());
+                    assertEquals(lld.isEmpty(), ll.isEmpty());
+                    for (int j = 0; j < lld.size(); j++) {
+                        assertEquals(lld.get(j), ll.get(j));
+                    }
+                }
+            } else if (operationNumber == 3) {
+                assertEquals(lld.size(), ll.size());
+                if (lld.size() > 0) {
+                    lld.removeLast();
+                    ll.removeLast();
+                    assertEquals(lld.size(), ll.size());
+                    assertEquals(lld.isEmpty(), ll.isEmpty());
+                    for (int j = 0; j < lld.size(); j++) {
+                        assertEquals(lld.get(j), ll.get(j));
+                    }
+                }
+            } else if (operationNumber == 4) {
+                if (lld.size() > 0) {
+                    int index = StdRandom.uniform(0, lld.size());
+                    assertEquals(lld.get(index), ll.get(index));
+                }
+            } else if (operationNumber == 5) {
+                Iterator<Integer> lldi = lld.iterator();
+                Iterator<Integer> lli = lld.iterator();
+                assertEquals(lldi.hasNext(), lli.hasNext());
+                while (lldi.hasNext()) {
+                    assertEquals(lldi.hasNext(), lli.hasNext());
+                    assertEquals(lldi.next(), lli.next());
+                }
+            } else {
+                assertEquals(lld.equals(ll), ll.equals(lld));
+            }
+        }
     }
 }

@@ -46,7 +46,7 @@ public class TestBuggyAList {
                 L.addLast(randVal);
                 B.addLast(randVal);
                 assertEquals(L.size(), B.size());
-                for (int j = 0; i < L.size(); i++) {
+                for (int j = 0; j < L.size(); j++) {
                     assertEquals(L.get(j), B.get(j));
                 }
             } else if (operationNumber == 1) {
