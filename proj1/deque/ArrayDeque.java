@@ -4,7 +4,9 @@ import java.util.Iterator;
 
 public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     private static final int INIT_CAPACITY = 10;
-    private static final double RESIZE_FACTOR = 1.5;
+    private static final double INCREASE_FACTOR = 1.3;
+    private static final int DECREASE_FACTOR = 4;
+
 
     private class ADequeIterator implements Iterator<T> {
         private int index;
@@ -39,7 +41,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
 
     private void resize(int capacity) {
         T[] newArray = (T[]) new Object[capacity];
-        for (int i = 0; i < total; i++) {
+        for (int i = 0; i < size; i++) {
             newArray[i + 1] = items[(head + 1) % total];
             head = (head + 1) % total;
         }
@@ -52,7 +54,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     @Override
     public void addFirst(T item) {
         if (head == tail) {
-            resize((int) Math.round(total * RESIZE_FACTOR));
+            resize((int) Math.round(total * INCREASE_FACTOR));
         }
         items[head] = item;
         head = (head - 1 + total) % total;
@@ -62,7 +64,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     @Override
     public void addLast(T item) {
         if (head == tail) {
-            resize((int) Math.round(total * RESIZE_FACTOR));
+            resize((int) Math.round(total * INCREASE_FACTOR));
         }
         items[tail] = item;
         tail = (tail + 1) % total;
@@ -82,8 +84,12 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
 
     @Override
     public T removeFirst() {
+
         if (size == 0) {
             return null;
+        }
+        if (size < Math.round(total / DECREASE_FACTOR)) {
+            resize((int) Math.round(total / DECREASE_FACTOR) + 2);
         }
         T tmp = items[(head + 1) % total];
         items[(head + 1) % total] = null;
@@ -96,6 +102,9 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     public T removeLast() {
         if (size == 0) {
             return null;
+        }
+        if (size < Math.round(total / DECREASE_FACTOR)) {
+            resize((int) Math.round(total / DECREASE_FACTOR));
         }
         T tmp = items[(tail - 1 + total) % total];
         items[(tail - 1 + total) % total] = null;
