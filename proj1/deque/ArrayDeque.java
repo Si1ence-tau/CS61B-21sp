@@ -6,7 +6,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     private static final int INIT_CAPACITY = 10;
     private static final double INCREASE_FACTOR = 1.5;
     private static final int DECREASE_LIMINAL = 4;
-    private static final int DECREASE_FACTOR = 2;
+    private static final int DECREASE_FACTOR = 3;
 
 
     private class ADequeIterator implements Iterator<T> {
