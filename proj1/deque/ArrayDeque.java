@@ -4,8 +4,9 @@ import java.util.Iterator;
 
 public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
     private static final int INIT_CAPACITY = 10;
-    private static final double INCREASE_FACTOR = 1.3;
-    private static final int DECREASE_FACTOR = 4;
+    private static final double INCREASE_FACTOR = 1.5;
+    private static final int DECREASE_LIMINAL = 4;
+    private static final int DECREASE_FACTOR = 2;
 
 
     private class ADequeIterator implements Iterator<T> {
@@ -53,7 +54,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
 
     @Override
     public void addFirst(T item) {
-        if (head == tail) {
+        if (size + 2 >= total) {
             resize((int) Math.round(total * INCREASE_FACTOR));
         }
         items[head] = item;
@@ -63,9 +64,10 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
 
     @Override
     public void addLast(T item) {
-        if (head == tail) {
+        if (size + 2 >= total) {
             resize((int) Math.round(total * INCREASE_FACTOR));
         }
+
         items[tail] = item;
         tail = (tail + 1) % total;
         size++;
@@ -88,8 +90,8 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        if (size < Math.round(total / DECREASE_FACTOR)) {
-            resize((int) Math.round(total / DECREASE_FACTOR) + 2);
+        if (size < Math.round(total / DECREASE_LIMINAL) && size > INIT_CAPACITY) {
+            resize((int) Math.round(total / DECREASE_FACTOR));
         }
         T tmp = items[(head + 1) % total];
         items[(head + 1) % total] = null;
@@ -103,8 +105,8 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        if (size < Math.round(total / DECREASE_FACTOR)) {
-            resize((int) Math.round(total / DECREASE_FACTOR) + 2);
+        if (size < Math.round(total / DECREASE_LIMINAL) && size > INIT_CAPACITY) {
+            resize((int) Math.round(total / DECREASE_FACTOR));
         }
         T tmp = items[(tail - 1 + total) % total];
         items[(tail - 1 + total) % total] = null;
@@ -115,6 +117,9 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
 
     @Override
     public T get(int index) {
+        if (size() <= index) {
+            return null;
+        }
         return items[(head + 1 + index) % total];
     }
 
