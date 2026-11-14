@@ -90,7 +90,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        if (size < Math.round(total / DECREASE_LIMINAL) && size > INIT_CAPACITY) {
+        if (size < Math.round(total / DECREASE_LIMINAL)) {
             resize((int) Math.round(total / DECREASE_FACTOR));
         }
         T tmp = items[(head + 1) % total];
@@ -105,7 +105,7 @@ public class ArrayDeque<T> implements deque.Deque<T>, Iterable<T> {
         if (size == 0) {
             return null;
         }
-        if (size < Math.round(total / DECREASE_LIMINAL) && size > INIT_CAPACITY) {
+        if (size < Math.round(total / DECREASE_LIMINAL)) {
             resize((int) Math.round(total / DECREASE_FACTOR));
         }
         T tmp = items[(tail - 1 + total) % total];

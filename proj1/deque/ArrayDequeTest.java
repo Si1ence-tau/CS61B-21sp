@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
-
 /** Performs some basic linked list tests. */
 public class ArrayDequeTest {
 
